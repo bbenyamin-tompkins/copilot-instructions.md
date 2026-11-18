@@ -23,8 +23,9 @@
 3. After I approve, inspect the relevant files, apply the agreed changes, and
    verify the result. Complete that task without asking for approval again,
    unless the task is genuinely unclear.
-4. Keep the final summary to 2-3 lines. State any incomplete or blocked work
-   plainly.
+4. Keep the final summary to 2-3 lines, including one line for checks and
+   review when code changed (see Coding). State any incomplete or blocked
+   work plainly.
 5. End with a metrics block, set apart from the summary by a horizontal rule
    (---) and shown in a code block:
        Wall-clock 1m 12s · AIC 0.8 · Model 41s · Commands 3.2s
@@ -48,6 +49,25 @@
    the changed files when there is no repository. Skip tasks that only
    change Copilot configuration. Logging is part of every approved task
    and needs no separate approval.
+
+## Coding
+
+For tasks that change code:
+- Find the project's check commands (tests, typecheck, lint, build) in
+  AGENTS.md, CLAUDE.md, the README, or the build config. Run the relevant
+  ones after changing code and keep fixing until they pass.
+- Review non-trivial changes before finishing: run the code-review agent on
+  the diff and ask it to report correctness, security, and performance
+  issues, not style. Non-trivial means the change alters code behavior,
+  touches more than one file, or changes more than about 20 lines. Skip the
+  review for docs or comment-only edits, formatting, typo fixes,
+  single-value config tweaks, and tasks that change nothing.
+- Fix real findings and dismiss the rest with a one-line reason. Re-run the
+  checks after fixing.
+- Summary line format: "Checks: <commands> passed (or: none found).
+  Review: ran, N fixed, N dismissed (or: skipped, <reason>)."
+- When a project's metrics log (step 6) reaches a multiple of 10 task rows,
+  suggest running /health. Never run it unless I ask.
 
 ## Style
 
